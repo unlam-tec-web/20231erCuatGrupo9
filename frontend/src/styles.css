@@ -4,10 +4,9 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
-body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
-
-body, html {
-  height: 100%;
+body,
+html {
+  font-family: "Montserrat", sans-serif;
   line-height: 1.8;
 }
 
@@ -21,4 +20,12 @@ body, html {
 
 .w3-bar .w3-button {
   padding: 16px;
+}
+
+.carrito-con-elemento {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 20px;
+  align-items: center;
 }

@@ -1,1 +1,25 @@
-<p>carrito works!</p>
+<main class="w3-container">
+    <h1>Tu carrito de compras</h1>
+    <section class="w3-col l8 s12">
+        <li *ngFor="let product of products; index as i;"
+            class="w3-ul w3-animate-left w3-round-xlarge w3-gray carrito-con-elemento" style="padding: 0.5em;">
+            <h4 class="">{{i}} {{product.name}}</h4>
+            <span class="w3-white w3-round-xlarge" style="padding-inline: 0.5em;">{{product.details}}</span>
+            <span (click)="removeElement(product);" class="w3-button w3-xlarge w3-right ">&times;</span>
+        </li>
+    </section>
+    <aside class="w3-col l4 w3-dark-gray w3-padding w3-border w3-right">
+        <div class="">
+            <h1>Precio total</h1>
+            <ol class="w3-padding">
+                <li *ngFor="let product of products; index as i;">
+                    {{product.name}} - ${{product.price}}
+                </li>
+            </ol>
+        </div>
+        <h3>Total: ${{total()}}</h3>
+
+        <button class="w3-green">Ir a pagar</button>
+        <button class="w3-gray">Vaciar carrito</button>
+    </aside>
+</main>
