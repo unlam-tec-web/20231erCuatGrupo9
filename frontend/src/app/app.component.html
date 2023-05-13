@@ -1,37 +1,17 @@
 <body class="w3-light-grey ">
-  <div class="fondo">
-    <div class="w3-bar w3-card nav" id="myNavbar">
-      <a routerLink="/" routerLinkActive="active" class="w3-bar-item w3-button">
-        <img width="40" alt="Angular Logo"
-          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-      </a>
-      <!-- Right-sided navbar links -->
-      <div class="w3-right w3-hide-small nav_derecho">
-        <a routerLink="/carrito" routerLinkActive="active" class="w3-bar-item w3-button">
-          Carrito
-        </a>
-        <a routerLink="/galeria" routerLinkActive="active" class="w3-bar-item w3-button">
-          Juegos
-        </a>
-      </div>
-      <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
-        onclick="w3_open()">
-        <i class="fa fa-bars"></i>
-      </a>
-    </div>
+  <div class="w3-container" style="background-color: #444444">
+    <img src="./assets/logo.jpg" style="width: 250px">
   </div>
 
-  <!-- Sidebar on small screens when clicking the menu icon -->
-  <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large"
-    style="display:none" id="mySidebar">
-    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">
-      Close ×
-    </a>
-    <a routerLink="/carrito" routerLinkActive="active" class="w3-bar-item w3-button">Carrito</a>
-    <a routerLink="/galeria" routerLinkActive="active" class="w3-bar-item w3-button">Galeria</a>
-  </nav>
+
+
+  <div class="w3-bar w3-black" routerLinkActive="active">
+    <a class="w3-bar-item w3-button" routerLink="/home">Inicio</a>
+    <a href="#" class="w3-bar-item w3-button" routerLink="/galeria">Productos</a>
+    <a href="#" class="w3-bar-item w3-button" routerLink="/carrito">Carrito</a>
+    <a class="w3-bar-item w3-button w3-right" routerLink="/login">Iniciar Sesión</a>
+  </div>
 
   <router-outlet></router-outlet>
 </body>
