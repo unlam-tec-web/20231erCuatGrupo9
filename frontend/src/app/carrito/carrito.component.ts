@@ -10,21 +10,21 @@ export class CarritoComponent {
   products: Product[] = [
     {
       id: 1,
-      name: 'product1',
-      details: 'productDetail1',
+      name: 'Dishonored',
+      details: 'Accion',
       price: 45.6
     },
     {
       id: 2,
-      name: 'product2',
-      details: 'productDetail2tail2 productDetail2 productDetail2 ',
+      name: 'Prey',
+      details: 'Misterio',
       price: 2689
     },
     {
       id: 3,
-      name: 'product3',
-      details: 'productDetail3',
-      price: 30
+      name: 'Battlefield 1',
+      details: 'Shooter',
+      price: 2689
     }
   ];
 
