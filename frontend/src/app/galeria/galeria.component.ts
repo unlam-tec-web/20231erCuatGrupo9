@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Product} from "../carrito/product";
+import { CarritoComponent } from '../carrito/carrito.component';
 
 @Component({
   selector: 'app-galeria',
@@ -11,104 +12,63 @@ export class GaleriaComponent {
   products: Product[] = [
     {
       id: 1,
-      name: 'Dishonored',
-      details: 'assets/img/dishonored.jpg',
-      price: 45.6
+      name: 'Dishonored 2',
+      image: 'assets/img/dishonored.jpg',
+      price: 45.6,
+      details:'Dishonored 2 de Bethesda'
     },
     {
       id: 2,
       name: 'Prey',
-      details: 'assets/img/prey.jpg',
-      price: 2689
+      image: 'assets/img/prey.jpg',
+      price: 2689,
+      details:'Prey de Bethesda'
     },
     {
       id: 3,
       name: 'Battlefield 1',
-      details: 'assets/img/battlefield1.jpg',
-      price: 2689
+      image: 'assets/img/battlefield1.jpg',
+      price: 2689,
+      details:'Battlefield de EA'
     },
     {
       id: 4,
       name: 'Doom',
-      details: 'assets/img/doom.jpg',
-      price: 2689
+      image: 'assets/img/doom.jpg',
+      price: 2689,
+      details:'Doom de Bethesda'
     },
     {
       id: 5,
-      name: 'Far Cry ',
-      details: 'assets/img/farcry.jpg',
-      price: 2689
+      name: 'Far Cry',
+      image: 'assets/img/farcry.jpg',
+      price: 2689,
+      details:'Far Cry de Ubisoft'
     },
     {
       id: 6,
       name: 'Hitman',
-      details: 'assets/img/hitman.jpg',
-      price: 2689
+      image: 'assets/img/hitman.jpg',
+      price: 2689,
+      details:'Hitman de Eidos'
     },
     {
       id: 7,
-      name: 'Horizon',
-      details: 'assets/img/horizon.jpg',
-      price: 2689
+      name: 'Horizon - Forbidden west',
+      image: 'assets/img/horizon.jpg',
+      price: 2689,
+      details:'Horizon - Forbidden west de Guerrilla'
     },
     {
       id: 8,
-      name: 'Medium',
-      details: 'assets/img/medium.jpg',
-      price: 30
+      name: 'The Medium',
+      image: 'assets/img/medium.jpg',
+      price: 30,
+      details:'The Medium de Bloober'
     }
   ];
+  
+  carrito: CarritoComponent = new CarritoComponent;
 
   constructor() { }
 }
-
-/*
-* <div class="gallery-item">
-      <img src="assets/img/dishonored.jpg" alt="Foto 2">
-      <div class="gallery-item-caption">
-        <h3>Dishonored 2</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/prey.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Prey</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/battlefield1.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Battlefield 1</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/doom.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Doom</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/farcry.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Far Cry 3</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/hitman.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Hitman</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/horizon.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Horizon</h3>
-      </div>
-    </div>
-    <div class="gallery-item">
-      <img src="assets/img/medium.jpg" alt="Foto 3">
-      <div class="gallery-item-caption">
-        <h3>Medium</h3>
-      </div>
-    </div>
-* */

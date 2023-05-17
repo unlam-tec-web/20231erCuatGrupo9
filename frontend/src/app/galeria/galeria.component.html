@@ -1,43 +1,21 @@
-<html>
 <head>
   <title>Galería de fotos</title>
 </head>
+
 <body class="fondo">
 
   <h1>Juegos</h1>
 
-
-  <!--<div class="slideshow-container">
-    <div class="mySlides fade">
-      <img src="assets/img/prey.jpg" style="width:100%">
-    </div>
-
-    <div class="mySlides fade">
-      <img src="assets/img/medium.jpg" style="width:100%">
-    </div>
-
-    <div class="mySlides fade">
-      <img src="assets/img/farcry.jpg" style="width:100%">
-    </div>
-
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-  </div> -->
-
-
   <section class="gallery">
 
     <div *ngFor="let product of products; index as i;" class="gallery-item">
-      <img src={{product.details}} alt="Foto">
+      <img src="{{product.image}}" alt="Foto">
       <div class="gallery-item-caption">
         <h3>{{product.name}}</h3>
-        <p>${{product.price}}</p>
+        <p>${{product.price}} - <button class="w3-btn w3-ripple w3-teal" (click)="carrito.addProduct(product)">+</button><button class="w3-btn w3-ripple w3-teal" style="margin-left: 1em;" (click)="carrito.removeProduct(product)">-</button></p>
       </div>
     </div>
-
-
 
   </section>
 
 </body>
-</html>

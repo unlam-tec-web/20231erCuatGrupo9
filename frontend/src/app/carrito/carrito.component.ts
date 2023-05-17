@@ -7,31 +7,17 @@ import { Product } from './product';
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent {
-  products: Product[] = [
-    {
-      id: 1,
-      name: 'Dishonored',
-      details: 'Accion',
-      price: 45.6
-    },
-    {
-      id: 2,
-      name: 'Prey',
-      details: 'Misterio',
-      price: 2689
-    },
-    {
-      id: 3,
-      name: 'Battlefield 1',
-      details: 'Shooter',
-      price: 2689
-    }
-  ];
+  products: Product[] = [];
 
-  constructor() { }
+  constructor() {
+    this.products = this.getProducts();
+  }
 
-  removeElement(id: Product) {
-    delete this.products[this.products.indexOf(id, 0)]
+  removeProduct(toDelete: Product) {
+    this.products.forEach((element, index) => {
+      if (element.id == toDelete.id) this.products.splice(index, 1);
+    });
+    this.saveLocal();
   }
 
   total() {
@@ -40,5 +26,38 @@ export class CarritoComponent {
       total += product.price;
     });
     return total;
+  }
+
+  addProduct(product: Product) {
+    var carrito_guardado = localStorage.getItem("carrito");
+    if (carrito_guardado) {
+      this.products = JSON.parse(carrito_guardado);
+      this.products.push(product);
+    } else {
+      this.products = [];
+      this.products.push(product);
+    }
+
+    this.saveLocal()
+    return true;
+  }
+
+  getProducts() {
+    var carrito_guardado = localStorage.getItem("carrito");
+    if (carrito_guardado) { return JSON.parse(carrito_guardado); }
+    return null;
+  }
+
+  saveLocal() {
+    localStorage.setItem('carrito', JSON.stringify(this.products));
+  }
+
+  clearCart() {
+    this.products = [];
+    this.saveLocal();
+  }
+
+  count() {
+    return this.products.length;
   }
 }
