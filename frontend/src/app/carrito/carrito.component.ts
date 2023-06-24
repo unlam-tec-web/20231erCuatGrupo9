@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Product } from './product';
+import { RouterTestingHarness } from '@angular/router/testing';
 
 @Component({
   selector: 'app-carrito',
@@ -29,6 +30,11 @@ export class CarritoComponent {
   }
 
   addProduct(product: Product) {
+    //Si ya esta en el carrito, no lo agrego
+    if (this.isProductInCart(product)) {
+      return false;
+    }
+
     var carrito_guardado = localStorage.getItem("carrito");
     if (carrito_guardado) {
       this.products = JSON.parse(carrito_guardado);
@@ -59,5 +65,14 @@ export class CarritoComponent {
 
   count() {
     return this.products.length;
+  }
+
+  isProductInCart(needle: Product) {
+    var flag = false;
+    this.products.forEach((element, index) => {
+      if (element.id == needle.id) flag = true;
+    });
+
+    return flag;
   }
 }
