@@ -1,54 +1,55 @@
 const express = require('express');
-
+var cors = require('cors')
 const app = express();
-let productos = ({
+app.use(cors())
+let productos = [{
         id: 1,
         name: 'Dishonored',
-        details: 'assets/img/dishonored.jpg',
+        image: 'assets/img/dishonored.jpg',
         price: 45.6
     },
     {
         id: 2,
         name: 'Prey',
-        details: 'assets/img/prey.jpg',
+        image: 'assets/img/prey.jpg',
         price: 2689
     },
     {
         id: 3,
         name: 'Battlefield 1',
-        details: 'assets/img/battlefield1.jpg',
+        image: 'assets/img/battlefield1.jpg',
         price: 2689
     },
     {
         id: 4,
         name: 'Doom',
-        details: 'assets/img/doom.jpg',
+        image: 'assets/img/doom.jpg',
         price: 2689
     },
     {
         id: 5,
         name: 'Far Cry ',
-        details: 'assets/img/farcry.jpg',
+        image: 'assets/img/farcry.jpg',
         price: 2689
     },
     {
         id: 6,
         name: 'Hitman',
-        details: 'assets/img/hitman.jpg',
+        image: 'assets/img/hitman.jpg',
         price: 2689
     },
     {
         id: 7,
         name: 'Horizon',
-        details: 'assets/img/horizon.jpg',
+        image: 'assets/img/horizon.jpg',
         price: 2689
     },
     {
         id: 8,
         name: 'Medium',
-        details: 'assets/img/medium.jpg',
+        image: 'assets/img/medium.jpg',
         price: 30
-    } );
+    } ];
 
 let isLogin = () => false;
 
@@ -63,23 +64,24 @@ let showIP = (req, res, next) => {
 }; 
 
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     if(isLogin()){
         next();
     }else{
         res.send('No estas logeado');
     }
-}, logger, showIP);
+}, logger, showIP);*/
 
 app.use(express.json());
 
-app.get('/:user', (req, res) => {
+
+/*app.get('/:user', (req, res) => {
 
     let usuario = req.params.user;
     res.json({
         productos
     });
-});
+});*/
 
 app.post('/agregarProducto', (req, res) => {
     console.log("JSON:" + JSON.stringify(req.body));
@@ -90,7 +92,7 @@ app.post('/agregarProducto', (req, res) => {
     let productoNew = ({
         id : id,
         name : nombre,
-        details : detalles,
+        image : detalles,
         price : precio
     })
     let newJson = agregarCampoAJSON(productos, nombre, productoNew);
@@ -202,20 +204,3 @@ function getProductoData(jsonString, campo) {
         return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
