@@ -7,7 +7,7 @@ import { CarritoComponent } from './carrito/carrito.component';
 import { HomeComponent } from './home/home.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { LoginComponent } from './login/login.component';
-import { SigninComponent } from './signin/signin.component';
+import { SignUpComponent } from './signUp/signUp.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -18,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     GaleriaComponent,
     LoginComponent,
-    SigninComponent
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

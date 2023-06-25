@@ -4,7 +4,7 @@ import { CarritoComponent } from './carrito/carrito.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from "./login/login.component";
-import { SigninComponent } from "./signin/signin.component";
+import { SignUpComponent } from "./signUp/signUp.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'galeria', component: GaleriaComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signin', component: SigninComponent }
+  { path: 'signUp', component: SignUpComponent }
 ];
 
 @NgModule({
