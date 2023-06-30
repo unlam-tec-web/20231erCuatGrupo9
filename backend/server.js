@@ -1,7 +1,7 @@
 const express = require('express');
 var cors = require('cors');
 const app = express();
-const { body, checkSchema, validationResult } = require('express-validator');
+const { query, param, body, checkSchema, validationResult } = require('express-validator');
 const config = require("./credenciales.json");
 const awsConfig = require('./cognito.js');
 const mysql = require("./mysql.js");
@@ -26,7 +26,6 @@ app.post("/login",
             });
         }
 
-        //TODO: filter vars
         var username = req.body.mail;
         var password = req.body.password;
 
@@ -35,10 +34,10 @@ app.post("/login",
         awsConfig.getCognitoUser(username).authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
 
-                res.json(
-                    access_token = result.getAccessToken().getJwtToken(),
-                    id_token = result.getIdToken().getJwtToken(),
-                    refresh_token = result.getRefreshToken().getToken()
+                res.status(200).json(
+                    {
+                        result
+                    }
                 );
             },
             onFailure: function (error) {
@@ -117,9 +116,13 @@ app.post("/verify",
         });
     });
 
+
 app.post("/resetPassword",
+    checkSchema(awsConfig.password_validate),
+    checkSchema(awsConfig.new_password_validate),
     checkSchema(awsConfig.mail_validate),
     (req, res) => {
+
         const errors = validationResult(req);
 
         //Validacion de datos
@@ -131,15 +134,30 @@ app.post("/resetPassword",
         }
 
         var username = req.body.mail;
+        var password = req.body.password;
+        var newpassword = req.body.newpassword;
 
-        var params = {
-            ClientId: config.ClientId,
-            Username: username
-        };
+        var cognitoUser = awsConfig.getCognitoUser(username);
 
-        awsConfig.getCognitoUser(username).forgotPassword(params, function (error, data) {
-            if (error) { res.status(400).json(error); }
-            else { res.status(200).json(result); }
+        cognitoUser.authenticateUser(awsConfig.getAuthDetails(username, password), {
+            onSuccess: function (resultado) {
+                cognitoUser.changePassword(password, newpassword, (error, result) => {//Aca hay un error por algun motivo
+                    if (error) {
+                        res.status(400).json({
+                            error,
+                            "mensaje": "No se pudo cambiar la clave"
+                        });
+                    } else {
+                        res.status(200).json(result);
+                    }
+                });
+            },
+            onFailure: function (error) {
+                res.status(400).json({
+                    error,
+                    "mensaje": "Usuario o contraseña incorrecta"
+                });
+            },
         });
     });
 
@@ -169,8 +187,8 @@ app.post('/comprar', (req, res) => {
 
 app.post('/agregarProducto',
     body("nombre").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
+    body("precio").isNumeric().withMessage("El precio debe ser un numero"),
     body("imagen").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
-    body("precio").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
     (req, res) => {
 
         const errors = validationResult(req);
@@ -183,26 +201,43 @@ app.post('/agregarProducto',
             });
         }
 
-        let resultado = insertarProducto(req.body.nombre, req.body.precio, req.body.imagen);
-        if (resultado) {
-            res.json(
-                'Producto agregado con Exito'
-            )
-        } else {
-            res.json(
-                'Producto Existente!'
-            )
-        }
+        mysql.insertarProducto(req.body.nombre, req.body.precio, req.body.imagen)
+            .then((jsonResults) => {
+                res.status(200).json(
+                    'Producto agregado con Exito'
+                )
+            })
+            .catch((error) => {
+                res.status(400).json(
+                    'Error al agregar el producto'
+                )
+            });
     });
 
-app.delete('/borrarProducto', (req, res) => {
-    let productoEliminar = req.params.producto;
-    const jsonActualizado = mysql.eliminarCampoDeJSON(productos, productoEliminar);
-    if (jsonActualizado) {
-        productos = jsonActualizado.toString();
-    }
-    res.send('Producto Eliminado con exito');
-});
+app.delete('/borrarProducto',
+    query("id").isNumeric().withMessage("El id debe ser un numero"),
+    (req, res) => {
+
+        const errors = validationResult(req);
+
+        //Validacion de datos
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        mysql.eliminarProducto(req.query.id).then((jsonResults) => {
+            res.status(200).json(
+                'Producto Eliminado con exito'
+            )
+        }).catch((error) => {
+            res.status(400).json(
+                'Error al eliminar el producto'
+            )
+        });
+    });
 
 /** PRODUCTOS */
 

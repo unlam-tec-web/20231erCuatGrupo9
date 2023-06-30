@@ -2,21 +2,26 @@ const mysql = require('mysql');
 const config = require("./credenciales.json");
 var connection = mysql.createConnection(config.mysqlConectionData);
 
-const insertarProducto = (nombre, precio, imagen) => {
+function insertarProducto(nombre, precio, imagen) {
     // const { nombre, precio, imagen } = producto;
     const query = `INSERT INTO product (name, price, image) VALUES (?, ?, ?)`;
-    connection.query(query, [nombre, precio, imagen], (error, results) => {
-        if (error) {
-            console.error('Error al insertar el producto:', error);
-            return false;
-        }
-        console.log('Producto insertado correctamente');
-        return true;
+
+    return new Promise((resolve, reject) => {
+        connection.query(query, [nombre, precio, imagen], (error, results) => {
+            if (error) {
+                console.error('Error al obtener los productos:', error);
+                reject(error);
+            } else {
+                console.log('Productos:');
+                console.log(results);
+                resolve(JSON.parse(JSON.stringify(results)))
+            }
+        });
     });
 };
 
 // Método para actualizar un producto existente por su ID
-const actualizarProducto = (id, producto) => {
+function actualizarProducto(id, producto) {
     const { nombre, precio, imagen } = producto;
     const query = `UPDATE product SET name = ?, price = ?, image = ? WHERE id = ?`;
 
@@ -29,20 +34,21 @@ const actualizarProducto = (id, producto) => {
     });
 };
 
-//Falta adaptar
-const eliminarProducto = (id) => {
-    const query = `DELETE FROM product WHERE id = ?`;
 
-    connection.query(query, [id], (error, results) => {
-        if (error) {
-            console.error('Error al eliminar el producto:', error);
-            return;
-        }
-        console.log('Producto eliminado correctamente');
+function eliminarProducto(id) {
+    const query = `DELETE FROM product WHERE id = ?`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, [id], (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results)
+            }
+        });
     });
 };
 
-const obtenerProductos = () => {
+function obtenerProductos() {
     const query = `SELECT * FROM product`;
 
     return new Promise((resolve, reject) => {

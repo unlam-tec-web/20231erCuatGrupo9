@@ -16,7 +16,7 @@ const attributes = (key, value) => {
     }
 };
 
-const password_validate = {
+const password_validate = new_password_validate = {
     password: {
         isStrongPassword: {
             minLength: 8,
@@ -107,6 +107,7 @@ module.exports = {
     decodeJWTToken,
     mail_validate,
     password_validate,
+    new_password_validate,
     code_validate,
     given_name_validate
 }
