@@ -9,7 +9,7 @@ id smallint primary key not null auto_increment,
 name varchar(40) not null,
 image varchar(40) not null,
 price decimal not null
-)
+);
 
 INSERT INTO product (name, image, price)
 VALUES
@@ -23,4 +23,11 @@ VALUES
     ('Medium', 'assets/img/medium.jpg', 30);
     
 select * from product;
+
+create table compra(
+id smallint primary key auto_increment,
+usuario varchar(50) not null,
+total decimal not null,
+fecha DATE DEFAULT current_timestamp()
+)
 

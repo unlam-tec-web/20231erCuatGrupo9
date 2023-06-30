@@ -1,0 +1,60 @@
+<header class="w3-container w3-teal">
+  <h1>Stock</h1>
+</header>
+<body>
+<div class="w3-container w3-half w3-margin-top">
+  <div class="w3-responsive">
+    <table class="w3-table-all">
+      <thead>
+      <tr class="w3-teal">
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>
+          <img [src]="product.image" alt="Product Image" width="50" height="50">
+        </td>
+        <td>
+          <button class="w3-btn w3-blue" (click)="editProduct(product.id)">Edit</button>
+        </td>
+        <td>
+          <button class="w3-btn w3-red" (click)="deleteProduct(product.id)">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="w3-container w3-margin-top">
+  <input id="nameP" type="text" placeholder="Name">
+  <input id="priceP" type="text"  placeholder="Price">
+  <input id="imageP" type="text"  placeholder="Image URL">
+  <button class="w3-btn w3-green" (click)="addProduct()">Agregar producto</button>
+</div>
+
+</body>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .content {
+    flex: 1;
+    width: 50%;
+    margin-top: 20px;
+  }
+</style>

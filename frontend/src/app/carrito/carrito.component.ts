@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
 import { Product } from './product';
 import { RouterTestingHarness } from '@angular/router/testing';
+import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+
 
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.css']
+
 })
 export class CarritoComponent {
   products: Product[] = [];
 
-  constructor() {
+  constructor(protected httpClient: HttpClient) {
     this.products = this.getProducts();
   }
+
+
 
   removeProduct(toDelete: Product) {
     this.products.forEach((element, index) => {
@@ -65,6 +71,37 @@ export class CarritoComponent {
 
   count() {
     return this.products.length;
+  }
+
+  comprar(){
+    const url = 'http://localhost:3000/comprar';
+
+
+    var carrito_guardado = localStorage.getItem("carrito");
+
+    let body: any;
+    let t = this.total().toString();
+    let usuario = "";
+    if (carrito_guardado != null) {
+      body = {
+        usuario : usuario,
+        productos : JSON.parse(carrito_guardado),
+        total : t
+      }
+    } else {
+      body = {};
+    }
+
+    this.httpClient.post(url, body).subscribe(
+      response => {
+        console.log('Solicitud POST exitosa:', response);
+
+      },
+      error => {
+        console.error('Error en la solicitud POST:', error);
+       
+      }
+    );
   }
 
   isProductInCart(needle: Product) {

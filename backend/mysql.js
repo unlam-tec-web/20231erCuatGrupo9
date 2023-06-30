@@ -20,6 +20,22 @@ function insertarProducto(nombre, precio, imagen) {
     });
 };
 
+function persistirCompra(usuario, total, productos) {
+
+    const query = `INSERT INTO compra (usuario, total, productos) VALUES ( ?, ?, ?)`;
+
+    return new Promise((resolve, reject) => {
+        connection.query(query, [usuario, total, productos], (error, results) => {
+            if (error) {
+                console.error('Error al realizar la compra:', error);
+                reject(error);
+            } else {
+                console.log('Compra Persistida');
+            }
+        });
+    });
+};
+
 // Método para actualizar un producto existente por su ID
 function actualizarProducto(id, producto) {
     const { nombre, precio, imagen } = producto;
@@ -37,11 +53,15 @@ function actualizarProducto(id, producto) {
 
 function eliminarProducto(id) {
     const query = `DELETE FROM product WHERE id = ?`;
+    console.log(id);
     return new Promise((resolve, reject) => {
         connection.query(query, [id], (error, results) => {
             if (error) {
+                console.log("error al eliminar")
                 reject(error);
             } else {
+                console.log("exito al eliminar")
+                console.log(results);
                 resolve(results)
             }
         });
@@ -109,5 +129,6 @@ module.exports = {
     actualizarProducto,
     eliminarProducto,
     getProductoData,
-    eliminarCampoDeJSON
+    eliminarCampoDeJSON,
+    persistirCompra
 }

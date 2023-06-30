@@ -17,9 +17,10 @@ export class GaleriaComponent {
 
   products: Product[] = [];
 
-  carrito: CarritoComponent = new CarritoComponent;
+  carrito: any ;
 
   constructor(protected router: Router, protected httpClient: HttpClient) {
+    this.carrito  = new CarritoComponent(httpClient);
     let res: Observable<Product[]> =
       this.httpClient.get<Product[]>('http://localhost:3000/galeria');
 

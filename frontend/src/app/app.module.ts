@@ -8,8 +8,12 @@ import { HomeComponent } from './home/home.component';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './signUp/signUp.component';
+import { abmProductosComponent } from './abmProductos/abmProductos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+
+
+
 
 @NgModule({
   declarations: [
@@ -18,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     GaleriaComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    abmProductosComponent
   ],
   imports: [
     BrowserModule,

@@ -178,21 +178,39 @@ app.get('/galeria', (req, res) => {
 });
 
 app.post('/comprar', (req, res) => {
-    let id = req.params.id;
-    let producto = getProductoData(productos, id);
-    res.json(
-        'Compra realizada con Exito'
-    )
+    console.log("JSON:" + JSON.stringify(req.body));
+    let usuario = "test"//req.body.usuario;
+
+    let productos = generarJsonDesdeNombres(req.body.productos);
+    console.log(req.body.productos)
+    //let productosFinal = obtenerNombresSeparadosPorPipe(productos);
+
+
+    let total = req.body.total;
+    mysql.persistirCompra(usuario,total, productos)
+        .then((jsonResults) => {
+            res.status(200).json(
+                'Compra persistida'
+            )
+        })
+        .catch((error) => {
+            res.status(400).json(
+                'Error al persistir la compra'
+            )
+    });
+
+    //let producto = getProductoData(productos, id);
+
 });
 
 app.post('/agregarProducto',
-    body("nombre").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
-    body("precio").isNumeric().withMessage("El precio debe ser un numero"),
-    body("imagen").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
+    body("name").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
+    body("price").isNumeric().withMessage("El precio debe ser un numero"),
+    body("image").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
     (req, res) => {
 
         const errors = validationResult(req);
-
+        console.log("1")
         //Validacion de datos
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -200,9 +218,10 @@ app.post('/agregarProducto',
                 errors: errors.array()
             });
         }
-
-        mysql.insertarProducto(req.body.nombre, req.body.precio, req.body.imagen)
+        console.log("2")
+        mysql.insertarProducto(req.body.name, req.body.price, req.body.image)
             .then((jsonResults) => {
+                console.log("3")
                 res.status(200).json(
                     'Producto agregado con Exito'
                 )
@@ -214,21 +233,24 @@ app.post('/agregarProducto',
             });
     });
 
-app.delete('/borrarProducto',
-    query("id").isNumeric().withMessage("El id debe ser un numero"),
+app.post('/borrarProducto',
+    //query("id").isNumeric().withMessage("El id debe ser un numero"),
+    body("id").isNumeric().withMessage("El id debe ser un numero"),
     (req, res) => {
 
         const errors = validationResult(req);
 
         //Validacion de datos
         if (!errors.isEmpty()) {
+            console.log('no erorrs')
             return res.status(400).json({
                 success: false,
                 errors: errors.array()
             });
         }
 
-        mysql.eliminarProducto(req.query.id).then((jsonResults) => {
+        mysql.eliminarProducto(req.body.id).then((jsonResults) => {
+            console.log('delete success')
             res.status(200).json(
                 'Producto Eliminado con exito'
             )
@@ -238,6 +260,32 @@ app.delete('/borrarProducto',
             )
         });
     });
+
+    function generarJsonDesdeNombres(listaJson) {
+        const jsonResultante = [];
+
+        for (let i = 0; i < listaJson.length; i++) {
+            const objeto = listaJson[i];
+            const nombre = objeto.name;
+
+            const json = {
+                name: nombre
+            };
+
+            jsonResultante.push(json);
+        }
+
+        return JSON.stringify(jsonResultante);
+    }
+
+    function obtenerNombresSeparadosPorPipe(listaJson) {
+        const nombres = listaJson.map(objeto => objeto.name);
+        return nombres.join('|');
+    }
+
+
+
+
 
 /** PRODUCTOS */
 
