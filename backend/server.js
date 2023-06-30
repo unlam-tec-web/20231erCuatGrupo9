@@ -9,6 +9,8 @@ const mysql = require("./mysql.js");
 app.use(cors())
 app.use(express.json());
 
+/** COGNITO */
+
 app.post("/login", checkSchema(AwsConfig.esquemaLogin), (req, res) => {
 
     const errors = validationResult(req);
@@ -118,6 +120,10 @@ app.post("/verify",
         });
     });
 
+/** END COGNITO */
+
+/** PRODUCTOS */
+
 app.get('/galeria', (req, res) => {
     mysql.obtenerProductos()
         .then((jsonResults) => {
@@ -130,7 +136,6 @@ app.get('/galeria', (req, res) => {
         });
 });
 
-
 app.post('/comprar', (req, res) => {
     let id = req.params.id;
     let producto = getProductoData(productos, id);
@@ -139,21 +144,33 @@ app.post('/comprar', (req, res) => {
     )
 });
 
-app.post('/agregarProducto', (req, res) => {
-    let nombre = req.body.nombre;
-    let imagen = req.body.imagen;
-    let precio = req.body.precio;
-    let resultado = insertarProducto(nombre, precio, imagen);
-    if(resultado){
-        res.json(
-            'Producto agregado con Exito'
-        )
-    } else {
-        res.json(
-            'Producto Existente!'
-        )
-    }
-});
+app.post('/agregarProducto',
+    body("nombre").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
+    body("imagen").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
+    body("precio").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
+    (req, res) => {
+
+        const errors = validationResult(req);
+
+        //Validacion de datos
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        let resultado = insertarProducto(req.body.nombre, req.body.precio, req.body.imagen);
+        if (resultado) {
+            res.json(
+                'Producto agregado con Exito'
+            )
+        } else {
+            res.json(
+                'Producto Existente!'
+            )
+        }
+    });
 
 app.delete('/borrarProducto', (req, res) => {
     let productoEliminar = req.params.producto;
@@ -163,6 +180,8 @@ app.delete('/borrarProducto', (req, res) => {
     }
     res.send('Producto Eliminado con exito');
 });
+
+/** PRODUCTOS */
 
 app.listen(config.port, () => {
     console.log(`Escuchando en el puerto ${config.port}!`);
