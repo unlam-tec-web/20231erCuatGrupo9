@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {Observable} from "rxjs";
-import {Product} from "../carrito/product";
-import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Product } from "../carrito/product";
+import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 
 
@@ -42,7 +42,7 @@ export class abmProductosComponent {
     const url = 'http://localhost:3000/borrarProducto';
 
     const body = {
-      id : productId
+      id: productId
     };
 
     console.log(body)
@@ -58,6 +58,7 @@ export class abmProductosComponent {
       }
     );
     //this.products = this.products.filter(product => product.id !== productId);
+    window.location.reload();
   }
 
   addProduct() {
@@ -71,8 +72,6 @@ export class abmProductosComponent {
     const image = (document.getElementById("imageP") as HTMLInputElement).value;
     console.log(image)
 
-
-
     const body = {
       name: name,
       price: price,
@@ -84,18 +83,12 @@ export class abmProductosComponent {
     this.httpClient.post(url, body).subscribe(
       response => {
         console.log('Solicitud POST exitosa:', response);
-
-
       },
       error => {
         console.error('Error en la solicitud POST:', error);
 
       }
     );
-
+    window.location.reload();
   }
-
-
-
-
 }
