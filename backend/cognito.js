@@ -16,7 +16,7 @@ const attributes = (key, value) => {
     }
 };
 
-const esquemaLogin = {
+const password_validate = {
     password: {
         isStrongPassword: {
             minLength: 8,
@@ -25,17 +25,26 @@ const esquemaLogin = {
             minNumbers: 1
         },
         errorMessage: "La contraseña debe contener al menos una letra minuscula, una mayuscula, un numero y mas de 8 caracteres",
-    },
+    }
+}
+
+const mail_validate = {
     mail: {
         isEmail: {
             errorMessage: 'El email no es valido',
         },
         normalizeEmail: true
-    },
+    }
+}
+
+const given_name_validate = {
     given_name: {
         isLength: { min: 3 },
         errorMessage: "El nombre debe contener almenos 3 caracteres"
-    },
+    }
+}
+
+const code_validate = {
     code: {
         isLength: {
             min: 6,
@@ -96,5 +105,8 @@ module.exports = {
     setCognitoAttributeList,
     getAuthDetails,
     decodeJWTToken,
-    esquemaLogin
+    mail_validate,
+    password_validate,
+    code_validate,
+    given_name_validate
 }

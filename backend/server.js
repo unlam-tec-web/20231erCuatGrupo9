@@ -3,7 +3,7 @@ var cors = require('cors');
 const app = express();
 const { body, checkSchema, validationResult } = require('express-validator');
 const config = require("./credenciales.json");
-const AwsConfig = require('./cognito.js');
+const awsConfig = require('./cognito.js');
 const mysql = require("./mysql.js");
 
 app.use(cors())
@@ -11,55 +11,54 @@ app.use(express.json());
 
 /** COGNITO */
 
-app.post("/login", 
-checkSchema(AwsConfig.esquemaLogin.mail), 
-checkSchema(AwsConfig.esquemaLogin.password), 
-(req, res) => {
+app.post("/login",
+    checkSchema(awsConfig.mail_validate),
+    checkSchema(awsConfig.password_validate),
+    (req, res) => {
 
-    const errors = validationResult(req);
+        const errors = validationResult(req);
 
-    //Validacion de datos
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            success: false,
-            errors: errors.array()
+        //Validacion de datos
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        //TODO: filter vars
+        var username = req.body.mail;
+        var password = req.body.password;
+
+        var authenticationDetails = awsConfig.getAuthDetails(username, password);
+
+        awsConfig.getCognitoUser(username).authenticateUser(authenticationDetails, {
+            onSuccess: function (result) {
+
+                res.json(
+                    access_token = result.getAccessToken().getJwtToken(),
+                    id_token = result.getIdToken().getJwtToken(),
+                    refresh_token = result.getRefreshToken().getToken()
+                );
+            },
+            onFailure: function (error) {
+                switch (error.code) {
+                    case "NotAuthorizedException":
+                        res.status(401).json(error = "Usuario no existe o contraseña incorrecta");
+                        break;
+                    case "UserNotConfirmedException":
+                        res.status(401).json(error = "Usuario no confirmado");
+                        break;
+                    default:
+                        res.status(400).json(error);
+                }
+            },
         });
-    }
-
-    //TODO: filter vars
-    var username = req.body.mail;
-    var password = req.body.password;
-
-    var authenticationDetails = AwsConfig.getAuthDetails(username, password);
-
-    AwsConfig.getCognitoUser(username).authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
-
-            res.json(
-                access_token = result.getAccessToken().getJwtToken(),
-                id_token = result.getIdToken().getJwtToken(),
-                refresh_token = result.getRefreshToken().getToken()
-            );
-        },
-        onFailure: function (error) {
-            switch (error.code) {
-                case "NotAuthorizedException":
-                    res.status(401).json(error = "Usuario no existe o contraseña incorrecta");
-                    break;
-                case "UserNotConfirmedException":
-                    res.status(401).json(error = "Usuario no confirmado");
-                    break;
-                default:
-                    res.status(400).json(error);
-            }
-        },
     });
-});
 
 app.post("/signup",
-    checkSchema(AwsConfig.esquemaLogin.mail),
-    checkSchema(AwsConfig.esquemaLogin.password),
-    checkSchema(AwsConfig.esquemaLogin.given_name),
+    checkSchema(awsConfig.mail_validate),
+    checkSchema(awsConfig.given_name_validate),
     (req, res) => {
 
         const errors = validationResult(req);
@@ -76,10 +75,10 @@ app.post("/signup",
         var password = req.body.password;
         var given_name = req.body.given_name;
 
-        var attributeList = AwsConfig.setCognitoAttributeList(username, given_name);
+        var attributeList = awsConfig.setCognitoAttributeList(username, given_name);
 
 
-        AwsConfig.getUserPool().signUp(username, password, attributeList, null, (error, result) => {
+        awsConfig.getUserPool().signUp(username, password, attributeList, null, (error, result) => {
 
             if (error) {
                 res.status(400).json(error);
@@ -91,8 +90,8 @@ app.post("/signup",
     });
 
 app.post("/verify",
-    checkSchema(AwsConfig.esquemaLogin.mail),
-    checkSchema(AwsConfig.validaciones.code),
+    //checkSchema(awsConfig.mail_validate.mail),
+    checkSchema(awsConfig.code_validate),
     (req, res) => {
 
         const errors = validationResult(req);
@@ -108,13 +107,7 @@ app.post("/verify",
         var username = req.body.mail;
         var code = req.body.code;
 
-        var params = {
-            ClientId: config.ClientId,
-            ConfirmationCode: code,
-            Username: username
-        };
-
-        AwsConfig.getCognitoUser(username).confirmRegistration(code, true, (error, result) => {
+        awsConfig.getCognitoUser(username).confirmRegistration(code, true, (error, result) => {
             if (error) {
                 res.status(400).json(error);
             }
@@ -125,7 +118,7 @@ app.post("/verify",
     });
 
 app.post("/resetPassword",
-    checkSchema(AwsConfig.esquemaLogin.mail),
+    checkSchema(awsConfig.mail_validate),
     (req, res) => {
         const errors = validationResult(req);
 
@@ -144,7 +137,7 @@ app.post("/resetPassword",
             Username: username
         };
 
-        cognitoidentityserviceprovider.forgotPassword(params, function (error, data) {
+        awsConfig.getCognitoUser(username).forgotPassword(params, function (error, data) {
             if (error) { res.status(400).json(error); }
             else { res.status(200).json(result); }
         });
