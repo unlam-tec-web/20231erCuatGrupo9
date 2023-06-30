@@ -28,6 +28,12 @@ create table compra(
 id smallint primary key auto_increment,
 usuario varchar(50) not null,
 total decimal not null,
-fecha DATE DEFAULT current_timestamp()
-)
+fecha DATE DEFAULT (CURRENT_TIMESTAMP())
+);
+
+alter table compra add column productos varchar(500) not null;
+
+select * from compra;
+
+delete from product where id = 24;
 
