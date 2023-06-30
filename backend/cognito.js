@@ -31,6 +31,17 @@ const esquemaLogin = {
             errorMessage: 'El email no es valido',
         },
         normalizeEmail: true
+    },
+    given_name: {
+        isLength: { min: 3 },
+        errorMessage: "El nombre debe contener almenos 3 caracteres"
+    },
+    code: {
+        isLength: {
+            min: 6,
+            max: 6
+        },
+        errorMessage: "Codigo incorrecto"
     }
 }
 

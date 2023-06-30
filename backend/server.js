@@ -11,7 +11,10 @@ app.use(express.json());
 
 /** COGNITO */
 
-app.post("/login", checkSchema(AwsConfig.esquemaLogin), (req, res) => {
+app.post("/login", 
+checkSchema(AwsConfig.esquemaLogin.mail), 
+checkSchema(AwsConfig.esquemaLogin.password), 
+(req, res) => {
 
     const errors = validationResult(req);
 
@@ -54,8 +57,9 @@ app.post("/login", checkSchema(AwsConfig.esquemaLogin), (req, res) => {
 });
 
 app.post("/signup",
-    body("given_name").isLength({ min: 3 }).withMessage("El nombre debe contener almenos 3 caracteres"),
-    checkSchema(AwsConfig.esquemaLogin),
+    checkSchema(AwsConfig.esquemaLogin.mail),
+    checkSchema(AwsConfig.esquemaLogin.password),
+    checkSchema(AwsConfig.esquemaLogin.given_name),
     (req, res) => {
 
         const errors = validationResult(req);
@@ -87,8 +91,8 @@ app.post("/signup",
     });
 
 app.post("/verify",
-    body("mail").isEmail().normalizeEmail(),
-    body("code").isLength({ min: 6, max: 6 }).withMessage("Codigo incorrecto"),
+    checkSchema(AwsConfig.esquemaLogin.mail),
+    checkSchema(AwsConfig.validaciones.code),
     (req, res) => {
 
         const errors = validationResult(req);
@@ -117,6 +121,32 @@ app.post("/verify",
             else {
                 res.status(200).json(result);
             }
+        });
+    });
+
+app.post("/resetPassword",
+    checkSchema(AwsConfig.esquemaLogin.mail),
+    (req, res) => {
+        const errors = validationResult(req);
+
+        //Validacion de datos
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        var username = req.body.mail;
+
+        var params = {
+            ClientId: config.ClientId,
+            Username: username
+        };
+
+        cognitoidentityserviceprovider.forgotPassword(params, function (error, data) {
+            if (error) { res.status(400).json(error); }
+            else { res.status(200).json(result); }
         });
     });
 
