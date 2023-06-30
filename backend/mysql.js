@@ -31,7 +31,7 @@ const actualizarProducto = (id, producto) => {
 
 //Falta adaptar
 const eliminarProducto = (id) => {
-    const query = `DELETE FROM producto WHERE id = ?`;
+    const query = `DELETE FROM product WHERE id = ?`;
 
     connection.query(query, [id], (error, results) => {
         if (error) {

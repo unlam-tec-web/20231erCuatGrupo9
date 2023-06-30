@@ -4,6 +4,13 @@ use taller2;
 
 -- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'su contra';
 
+create table product(
+id smallint primary key not null auto_increment,
+name varchar(40) not null,
+image varchar(40) not null,
+price decimal not null
+)
+
 INSERT INTO product (name, image, price)
 VALUES
     ('Dishonored', 'assets/img/dishonored.jpg', 45.6),
@@ -16,12 +23,4 @@ VALUES
     ('Medium', 'assets/img/medium.jpg', 30);
     
 select * from product;
-
-create table product(
-id smallint primary key not null auto_increment,
-name varchar(40) not null,
-image varchar(40) not null,
-price decimal not null
-)
-
 
