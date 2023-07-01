@@ -13,6 +13,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class CarritoComponent {
   products: Product[] = [];
+  compraExitosa : boolean = false;
 
   constructor(protected httpClient: HttpClient) {
     this.products = this.getProducts();
@@ -95,11 +96,12 @@ export class CarritoComponent {
     this.httpClient.post(url, body).subscribe(
       response => {
         console.log('Solicitud POST exitosa:', response);
-
+        this.clearCart()
+        this.compraExitosa = true;
       },
       error => {
-        console.error('Error en la solicitud POST:', error);
-       
+        console.log('Error en la solicitud POST:', error);
+
       }
     );
   }
