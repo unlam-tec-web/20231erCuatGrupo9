@@ -13,7 +13,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class CarritoComponent {
   products: Product[] = [];
-  compraExitosa : boolean = false;
+  compraExitosa: boolean = false;
 
   constructor(protected httpClient: HttpClient) {
     this.products = this.getProducts();
@@ -38,7 +38,7 @@ export class CarritoComponent {
 
   addProduct(product: Product) {
     //Si ya esta en el carrito, no lo agrego
-    if (this.isProductInCart(product)) {
+    if (this.products != null && this.isProductInCart(product)) {
       return false;
     }
 
