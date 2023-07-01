@@ -5,6 +5,7 @@ const { query, param, body, checkSchema, validationResult } = require('express-v
 const config = require("./credenciales.json");
 const awsConfig = require('./cognito.js');
 const mysql = require("./mysql.js");
+const { default: jwtDecode } = require('jwt-decode');
 
 app.use(cors())
 app.use(express.json());
@@ -117,6 +118,26 @@ app.post("/verify",
         });
     });
 
+app.post("/signOut",
+    (req, res) => {
+
+        const errors = validationResult(req);
+
+        //Validacion de datos
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
+
+        var username = awsConfig.decodeJWTToken(req.body.jwt).email;
+
+        awsConfig.getCognitoUser(username).signOut((response) => {
+            res.status(200).json(response);
+        });
+    });
+
 
 app.post("/resetPassword",
     checkSchema(awsConfig.password_validate),
@@ -188,7 +209,7 @@ app.post('/comprar', (req, res) => {
 
 
     let total = req.body.total;
-    mysql.persistirCompra(usuario,total, productos)
+    mysql.persistirCompra(usuario, total, productos)
         .then((jsonResults) => {
             res.status(200).json(
                 'Compra persistida'
@@ -198,7 +219,7 @@ app.post('/comprar', (req, res) => {
             res.status(400).json(
                 'Error al persistir la compra'
             )
-    });
+        });
 
     //let producto = getProductoData(productos, id);
 
@@ -261,27 +282,27 @@ app.post('/borrarProducto',
         });
     });
 
-    function generarJsonDesdeNombres(listaJson) {
-        const jsonResultante = [];
+function generarJsonDesdeNombres(listaJson) {
+    const jsonResultante = [];
 
-        for (let i = 0; i < listaJson.length; i++) {
-            const objeto = listaJson[i];
-            const nombre = objeto.name;
+    for (let i = 0; i < listaJson.length; i++) {
+        const objeto = listaJson[i];
+        const nombre = objeto.name;
 
-            const json = {
-                name: nombre
-            };
+        const json = {
+            name: nombre
+        };
 
-            jsonResultante.push(json);
-        }
-
-        return JSON.stringify(jsonResultante);
+        jsonResultante.push(json);
     }
 
-    function obtenerNombresSeparadosPorPipe(listaJson) {
-        const nombres = listaJson.map(objeto => objeto.name);
-        return nombres.join('|');
-    }
+    return JSON.stringify(jsonResultante);
+}
+
+function obtenerNombresSeparadosPorPipe(listaJson) {
+    const nombres = listaJson.map(objeto => objeto.name);
+    return nombres.join('|');
+}
 
 
 
