@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = '20231erCuatGrupo9';
+  jwt: string|null;
+
+  constructor() {
+    this.jwt = localStorage.getItem("jwt");
+  }
+
+
 }

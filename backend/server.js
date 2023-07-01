@@ -58,6 +58,7 @@ app.post("/login",
 app.post("/signup",
     checkSchema(awsConfig.mail_validate),
     checkSchema(awsConfig.given_name_validate),
+    checkSchema(awsConfig.password_validate),
     (req, res) => {
 
         const errors = validationResult(req);
@@ -89,7 +90,7 @@ app.post("/signup",
     });
 
 app.post("/verify",
-    //checkSchema(awsConfig.mail_validate.mail),
+    checkSchema(awsConfig.mail_validate),
     checkSchema(awsConfig.code_validate),
     (req, res) => {
 
@@ -234,7 +235,6 @@ app.post('/agregarProducto',
     });
 
 app.post('/borrarProducto',
-    //query("id").isNumeric().withMessage("El id debe ser un numero"),
     body("id").isNumeric().withMessage("El id debe ser un numero"),
     (req, res) => {
 

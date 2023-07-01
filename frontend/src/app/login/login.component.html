@@ -8,17 +8,18 @@
   <form class="w3-container w3-card-4">
 
     <p>
-      <input class="w3-input" type="email" style="width:90%" required>
-      <label>Correo</label></p>
+      <input class="w3-input" type="mail" style="width:90%" required id="mail" name="mail">
+      <label>Correo</label>
+    </p>
     <p>
-      <input class="w3-input" type="password" style="width:90%" required>
-      <label>Contraseña</label></p>
+      <input class="w3-input" type="password" style="width:90%" required id="password" name="password">
+      <label>Contraseña</label>
+    </p>
     <p>
-      <input id="milk" class="w3-check" type="checkbox" checked="checked">
-      <label>Mantener la sesión iniciada</label></p>
-    <p>
-      <button class="w3-button w3-section w3-teal w3-ripple"> Iniciar sesión </button>
-      <button class="w3-margin-left w3-button w3-section w3-teal w3-ripple" routerLink="/signUp"> Crea tu cuenta </button></p>
+      <button class="w3-button w3-section w3-teal w3-ripple" (click)="login()"> Iniciar sesión </button>
+      <button class="w3-margin-left w3-button w3-section w3-teal w3-ripple" routerLink="/signUp"> Crea tu cuenta
+      </button>
+    </p>
 
   </form>
 
