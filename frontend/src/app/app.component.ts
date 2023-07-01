@@ -10,9 +10,11 @@ import { HttpClient } from "@angular/common/http";
 export class AppComponent {
   title = '20231erCuatGrupo9';
   public jwt: string | null;
+  public rol: string | null;
 
   constructor(protected router: Router, protected httpClient: HttpClient,) {
     this.jwt = localStorage.getItem("jwt");
+    this.rol = localStorage.getItem("rol");
   }
 
   getJWT() {
@@ -33,6 +35,9 @@ export class AppComponent {
       }
     );
     localStorage.removeItem("jwt");
-    window.location.reload();
+    localStorage.removeItem("rol");
+    this.router.navigate(['/home']).then(() => {
+      window.location.reload();
+    });;
   }
 }

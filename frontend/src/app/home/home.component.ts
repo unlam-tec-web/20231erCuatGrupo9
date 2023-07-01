@@ -1,4 +1,6 @@
+import { HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  
+  constructor(protected router: Router){}
+
   images = [
     'assets/img/doom.jpg',
     'assets/img/doom.jpg',
@@ -42,16 +45,16 @@ export class HomeComponent {
     let i;
     const slides = document.getElementsByClassName("mySlides");
     const dots = document.getElementsByClassName("demo");
-    if (n > slides.length) {this.slideIndex = 1}
-    if (n < 1) {this.slideIndex = slides.length}
+    if (n > slides.length) { this.slideIndex = 1 }
+    if (n < 1) { this.slideIndex = slides.length }
     for (i = 0; i < slides.length; i++) {
       (slides[i] as HTMLElement).style.display = "none";
     }
     for (i = 0; i < dots.length; i++) {
       (dots[i] as HTMLElement).className = (dots[i] as HTMLElement).className.replace(" w3-white", "");
     }
-    (slides[this.slideIndex-1] as HTMLElement).style.display = "block";
-    (dots[this.slideIndex-1] as HTMLElement).className += " w3-white";
+    (slides[this.slideIndex - 1] as HTMLElement).style.display = "block";
+    (dots[this.slideIndex - 1] as HTMLElement).className += " w3-white";
   }
 
   slideIndex = 1;

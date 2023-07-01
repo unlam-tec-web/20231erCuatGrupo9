@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Product } from './product';
 import { RouterTestingHarness } from '@angular/router/testing';
-import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
 
 
 @Component({
@@ -74,25 +74,24 @@ export class CarritoComponent {
     return this.products.length;
   }
 
-  comprar(){
-    const url = 'http://localhost:3000/comprar';
-
+  comprar() {
 
     var carrito_guardado = localStorage.getItem("carrito");
 
     let body: any;
     let t = this.total().toString();
     let usuario = "";
+
     if (carrito_guardado != null) {
       body = {
-        usuario : usuario,
-        productos : JSON.parse(carrito_guardado),
-        total : t
+        usuario: usuario,
+        productos: JSON.parse(carrito_guardado),
+        total: t
       }
     } else {
       body = {};
     }
-
+    const url = 'http://localhost:3000/comprar';
     this.httpClient.post(url, body).subscribe(
       response => {
         console.log('Solicitud POST exitosa:', response);

@@ -11,11 +11,13 @@
     <a href="#" class="w3-bar-item w3-button" routerLink="/galeria">Productos</a>
     <div *ngIf="jwt!=null;else elseBlock">
       <a href="#" class="w3-bar-item w3-button" routerLink="/carrito">Carrito</a>
-      <a href="#" class="w3-bar-item w3-button" routerLink="/abmProductos">ABM Productos</a>
+      <div *ngIf="rol=='admin';">
+        <a href="#" class="w3-bar-item w3-button" routerLink="/abmProductos">ABM Productos</a>
+      </div>
       <a class="w3-bar-item w3-button w3-right" (click)="signOut()">Cerrar Sesión</a>
     </div>
     <ng-template #elseBlock>
-      
+
       <a class="w3-bar-item w3-button w3-right" routerLink="/login">Iniciar Sesión</a>
     </ng-template>
   </div>

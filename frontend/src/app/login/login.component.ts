@@ -36,6 +36,9 @@ export class LoginComponent {
       response => {
         console.log('Solicitud POST exitosa:', response);
         localStorage.setItem('jwt', response.result.idToken.jwtToken);
+        if (response.result.idToken.payload['cognito:groups'] !== undefined) {
+          localStorage.setItem('rol', response.result.idToken.payload['cognito:groups'][0]);
+        }
         window.location.reload();
       },
       error => {
@@ -53,6 +56,7 @@ export interface Response {
       jwtToken: string,
       payload: {
         sub: string,
+        "cognito:groups": [string]
         email_verified: boolean,
         iss: string,
         "cognito:username": string,
