@@ -61,11 +61,14 @@ app.post("/signup",
     checkSchema(awsConfig.given_name_validate),
     checkSchema(awsConfig.password_validate),
     (req, res) => {
-
+        console.log('llego');
+        console.log(JSON.stringify(req.body))
         const errors = validationResult(req);
 
         //Validacion de datos
         if (!errors.isEmpty()) {
+            console.log("entro por errors")
+            console.log(errors)
             return res.status(400).json({
                 success: false,
                 errors: errors.array()
@@ -74,17 +77,20 @@ app.post("/signup",
 
         var username = req.body.mail;
         var password = req.body.password;
-        var given_name = req.body.given_name;
+        var given_name = req.body.name;
 
         var attributeList = awsConfig.setCognitoAttributeList(username, given_name);
 
-
+        console.log("paso validaciones")
         awsConfig.getUserPool().signUp(username, password, attributeList, null, (error, result) => {
 
             if (error) {
+                console.log('error')
+
                 res.status(400).json(error);
             }
             else {
+                console.log('exito')
                 res.status(200).json(result);
             }
         });
@@ -94,7 +100,8 @@ app.post("/verify",
     checkSchema(awsConfig.mail_validate),
     checkSchema(awsConfig.code_validate),
     (req, res) => {
-
+        console.log("llego verify")
+        console.log(JSON.stringify(req.body))
         const errors = validationResult(req);
 
         //Validacion de datos
