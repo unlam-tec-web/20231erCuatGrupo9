@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,11 @@ import { Router } from "@angular/router";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(protected router: Router, protected httpClient: HttpClient) { }
+
+
+  constructor(protected router: Router, protected httpClient: HttpClient, app: AppComponent) {
+    if (app.jwt != null) { this.router.navigate(['/home']); }
+  }
 
 
   login() {
@@ -31,6 +36,7 @@ export class LoginComponent {
       response => {
         console.log('Solicitud POST exitosa:', response);
         localStorage.setItem('jwt', response.result.idToken.jwtToken);
+        window.location.reload();
       },
       error => {
         console.error('Error en la solicitud POST:', error);

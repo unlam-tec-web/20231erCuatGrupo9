@@ -12,7 +12,7 @@
     <div *ngIf="jwt!=null;else elseBlock">
       <a href="#" class="w3-bar-item w3-button" routerLink="/carrito">Carrito</a>
       <a href="#" class="w3-bar-item w3-button" routerLink="/abmProductos">ABM Productos</a>
-      <a class="w3-bar-item w3-button w3-right" routerLink="/login">Cerrar Sesión</a>
+      <a class="w3-bar-item w3-button w3-right" (click)="signOut()">Cerrar Sesión</a>
     </div>
     <ng-template #elseBlock>
       
