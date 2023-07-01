@@ -219,7 +219,7 @@ app.post('/comprar', (req, res) => {
     mysql.persistirCompra(usuario, total, productos)
         .then((jsonResults) => {
             res.status(200).json(
-                'Compra persistida'
+                'Compra persistida server'
             )
         })
         .catch((error) => {

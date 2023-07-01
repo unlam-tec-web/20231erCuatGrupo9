@@ -31,6 +31,7 @@ function persistirCompra(usuario, total, productos) {
                 reject(error);
             } else {
                 console.log('Compra Persistida');
+                resolve(true)
             }
         });
     });

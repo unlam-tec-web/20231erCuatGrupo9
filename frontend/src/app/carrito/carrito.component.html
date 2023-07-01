@@ -8,6 +8,13 @@
             <span (click)="removeProduct(product);" class="w3-button w3-xlarge w3-right ">&times;</span>
         </li>
     </section>
+    <div class="w3-container w3-content" style="margin-top: 15px; margin-bottom: 15px;" *ngIf="compraExitosa">
+      <div class="w3-card-4">
+        <div class="w3-container w3-blue">
+          <h3 class="w3-center" >COMPRA REALIZADA CON ÉXITO!</h3>
+        </div>
+      </div>
+    </div>
     <aside class="w3-col l4 w3-dark-gray w3-padding w3-border w3-right">
         <div class="">
             <h1>Precio total</h1>
